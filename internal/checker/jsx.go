@@ -70,7 +70,15 @@ var ReactNames = struct {
 
 func (c *Checker) checkJsxElement(node *ast.Node, checkMode CheckMode) *Type {
 	c.checkNodeDeferred(node)
-	return c.getJsxElementTypeAt(node)
+	jsxElementType := c.getJsxElementTypeAt(node)
+	if jsxElementType != nil {
+		openingElement := node.AsJsxElement().OpeningElement
+		jsxElementTypeArgs := c.getJsxElementTypeArguments(openingElement)
+		if jsxElementTypeArgs != nil {
+			return c.createTypeReference(jsxElementType, jsxElementTypeArgs)
+		}
+	}
+	return jsxElementType
 }
 
 func (c *Checker) checkJsxElementDeferred(node *ast.Node) {
@@ -99,7 +107,14 @@ func (c *Checker) checkJsxExpression(node *ast.Node, checkMode CheckMode) *Type 
 
 func (c *Checker) checkJsxSelfClosingElement(node *ast.Node, checkMode CheckMode) *Type {
 	c.checkNodeDeferred(node)
-	return c.getJsxElementTypeAt(node)
+	jsxElementType := c.getJsxElementTypeAt(node)
+	if jsxElementType != nil {
+		jsxElementTypeArgs := c.getJsxElementTypeArguments(node)
+		if jsxElementTypeArgs != nil {
+			return c.createTypeReference(jsxElementType, jsxElementTypeArgs)
+		}
+	}
+	return jsxElementType
 }
 
 func (c *Checker) checkJsxSelfClosingElementDeferred(node *ast.Node) {
@@ -1289,6 +1304,30 @@ func (c *Checker) getJsxElementTypeTypeAt(location *ast.Node) *Type {
 		return nil
 	}
 	return t
+}
+
+func (c *Checker) getJsxElementTagType(openingElement *ast.Node) *Type {
+	tagName := openingElement.TagName()
+	if isJsxIntrinsicTagName(tagName) {
+		return c.getStringLiteralType(tagName.Text())
+	}
+	return c.checkExpression(tagName)
+}
+
+func (c *Checker) getJsxElementPropsType(openingElement *ast.Node) *Type {
+	sig := c.getResolvedSignature(openingElement, nil, CheckModeNormal)
+	if sig != nil {
+		return c.getEffectiveFirstArgumentForJsxSignature(sig, openingElement)
+	}
+	return nil
+}
+
+func (c *Checker) getJsxElementTypeArguments(openingElement *ast.Node) []*Type {
+	tagType := c.getJsxElementTagType(openingElement)
+	if tagType == nil {
+		return nil
+	}
+	return []*Type{tagType}
 }
 
 func (c *Checker) getJsxType(name string, location *ast.Node) *Type {

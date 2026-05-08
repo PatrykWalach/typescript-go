@@ -1,0 +1,35 @@
+//// [tests/cases/compiler/jsxElementType.tsx] ////
+
+=== jsxElementType.tsx ===
+declare namespace JSX {
+    interface Element<T> {}
+    interface ElementClass {}
+    interface ElementAttributesProperty { props: {} }
+>props : {}
+
+    interface ElementChildrenAttribute { children: {} }
+>children : {}
+
+    interface IntrinsicElements { span: {} }
+>span : {}
+}
+
+declare function Component(props: { foo?: string }): any;
+>Component : (props: { foo?: string; }) => any
+>props : { foo?: string; }
+>foo : string | undefined
+
+type X = typeof Component;
+>X : (props: { foo?: string; }) => any
+>Component : (props: { foo?: string; }) => any
+
+const x = <Component />;
+>x : JSX.Element<(props: { foo?: string; }) => any>
+><Component /> : JSX.Element<(props: { foo?: string; }) => any>
+>Component : (props: { foo?: string; }) => any
+
+const y = <span />;
+>y : JSX.Element<"span">
+><span /> : JSX.Element<"span">
+>span : any
+
