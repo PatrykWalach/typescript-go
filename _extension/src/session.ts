@@ -357,7 +357,7 @@ interface DetectedVersion {
 async function findWorkspaceNativePreviewPackages(): Promise<DetectedVersion[]> {
     const results: DetectedVersion[] = [];
     for (const folder of vscode.workspace.workspaceFolders ?? []) {
-        const packagePath = vscode.Uri.joinPath(folder.uri, "node_modules", "@typescript", "native-preview");
+        const packagePath = vscode.Uri.joinPath(folder.uri, "node_modules", "@patryk_walach", "typescript");
         const resolved = await resolveTsdkPathToExe(path.normalize(packagePath.fsPath));
         if (!resolved) continue;
         results.push({
