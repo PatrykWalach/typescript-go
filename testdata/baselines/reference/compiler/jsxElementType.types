@@ -1,0 +1,64 @@
+//// [tests/cases/compiler/jsxElementType.tsx] ////
+
+=== jsxElementType.tsx ===
+declare namespace JSX {
+    interface Element<P, T> {}
+    interface ElementClass {}
+    interface ElementAttributesProperty { props: {} }
+>props : {}
+
+    interface ElementChildrenAttribute { children: {} }
+>children : {}
+
+    interface IntrinsicElements { span: {} }
+>span : {}
+}
+
+declare function Component(props: { foo?: string }): any;
+>Component : (props: { foo?: string; }) => any
+>props : { foo?: string; }
+>foo : string | undefined
+
+type X = typeof Component;
+>X : (props: { foo?: string; }) => any
+>Component : (props: { foo?: string; }) => any
+
+const x = <Component />;
+>x : JSX.Element<{}, (props: { foo?: string; }) => any>
+><Component /> : JSX.Element<{}, (props: { foo?: string; }) => any>
+>Component : (props: { foo?: string; }) => any
+
+const y = <span />;
+>y : JSX.Element<{}, "span">
+><span /> : JSX.Element<{}, "span">
+>span : any
+
+const z = <Component foo="bar" />;
+>z : JSX.Element<{ foo: string; }, (props: { foo?: string; }) => any>
+><Component foo="bar" /> : JSX.Element<{ foo: string; }, (props: { foo?: string; }) => any>
+>Component : (props: { foo?: string; }) => any
+>foo : string
+
+interface IProps { foo: string; bar?: number; }
+>foo : string
+>bar : number | undefined
+
+const props: IProps = { foo: "test" };
+>props : IProps
+>{ foo: "test" } : { foo: string; }
+>foo : string
+>"test" : "test"
+
+const w = <Component {...props} />;
+>w : JSX.Element<{ foo: string; bar?: number; }, (props: { foo?: string; }) => any>
+><Component {...props} /> : JSX.Element<{ foo: string; bar?: number; }, (props: { foo?: string; }) => any>
+>Component : (props: { foo?: string; }) => any
+>props : IProps
+
+const v = <Component {...props} foo="bar" />;
+>v : JSX.Element<{ bar?: number; foo: string; }, (props: { foo?: string; }) => any>
+><Component {...props} foo="bar" /> : JSX.Element<{ bar?: number; foo: string; }, (props: { foo?: string; }) => any>
+>Component : (props: { foo?: string; }) => any
+>props : IProps
+>foo : string
+
