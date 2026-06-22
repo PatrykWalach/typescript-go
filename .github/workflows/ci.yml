@@ -47,7 +47,7 @@ jobs:
       - run: npx hereby build
 
   release-build:
-    if: ${{ github.repository == 'microsoft/typescript-go' && github.event_name != 'merge_group' }}
+    if: ${{ github.repository == 'PatrykWalach/typescript-go' && github.event_name != 'merge_group' }}
     runs-on: TypeScript-1ES-GitHub-XL-2
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -100,7 +100,7 @@ jobs:
           - os: TypeScript-1ES-GitHub-XL-2
             name: 'race mode'
             race: true
-            skip: ${{ github.event_name == 'merge_group' || github.repository != 'microsoft/typescript-go' }}
+            skip: ${{ github.event_name == 'merge_group' || github.repository != 'PatrykWalach/typescript-go' }}
           - os: ubuntu-latest
             name: 'noembed'
             noembed: true
