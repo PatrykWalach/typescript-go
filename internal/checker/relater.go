@@ -1322,10 +1322,6 @@ func (c *Checker) typeCouldHaveTopLevelSingletonTypes(t *Type) bool {
 }
 
 func (c *Checker) getVariances(t *Type) []VarianceFlags {
-	// Arrays and tuples are known to be covariant, no need to spend time computing this.
-	if t == c.globalArrayType || t == c.globalReadonlyArrayType || t.objectFlags&ObjectFlagsTuple != 0 {
-		return c.arrayVariances
-	}
 	return c.getVariancesWorker(t.symbol, t.AsInterfaceType().TypeParameters())
 }
 
