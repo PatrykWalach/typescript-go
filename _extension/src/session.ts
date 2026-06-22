@@ -357,7 +357,7 @@ interface DetectedVersion {
 async function findWorkspaceNativePreviewPackages(): Promise<DetectedVersion[]> {
     const results: DetectedVersion[] = [];
     for (const folder of vscode.workspace.workspaceFolders ?? []) {
-        const packagePath = vscode.Uri.joinPath(folder.uri, "node_modules", "@typescript", "native-preview");
+        const packagePath = vscode.Uri.joinPath(folder.uri, "node_modules", "@patryk_walach", "typescript");
         const resolved = await resolveTsdkPathToExe(path.normalize(packagePath.fsPath));
         if (!resolved) continue;
         results.push({
@@ -488,7 +488,7 @@ async function promptSelectVersion(context: vscode.ExtensionContext, client: Cli
 
 /**
  * If the workspace has a tsdk setting pending consent, or has
- * `@typescript/native-preview` installed in node_modules, prompt the user
+ * `@patryk_walach/typescript` installed in node_modules, prompt the user
  * to allow using it.
  */
 export async function promptUseWorkspaceVersion(context: vscode.ExtensionContext): Promise<void> {
