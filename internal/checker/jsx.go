@@ -1315,19 +1315,19 @@ func (c *Checker) getJsxElementTagType(openingElement *ast.Node) *Type {
 }
 
 func (c *Checker) getJsxElementPropsType(openingElement *ast.Node) *Type {
-	sig := c.getResolvedSignature(openingElement, nil, CheckModeNormal)
-	if sig != nil {
-		return c.getEffectiveFirstArgumentForJsxSignature(sig, openingElement)
-	}
-	return nil
+	return c.createJsxAttributesTypeFromAttributesProperty(openingElement, CheckModeNormal)
 }
 
 func (c *Checker) getJsxElementTypeArguments(openingElement *ast.Node) []*Type {
+	propsType := c.getJsxElementPropsType(openingElement)
 	tagType := c.getJsxElementTagType(openingElement)
 	if tagType == nil {
 		return nil
 	}
-	return []*Type{tagType}
+	if propsType == nil {
+		propsType = c.unknownType
+	}
+	return []*Type{propsType, tagType}
 }
 
 func (c *Checker) getJsxType(name string, location *ast.Node) *Type {

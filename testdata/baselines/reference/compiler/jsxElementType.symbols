@@ -4,12 +4,13 @@
 declare namespace JSX {
 >JSX : Symbol(JSX, Decl(jsxElementType.tsx, 0, 0))
 
-    interface Element<T> {}
+    interface Element<P, T> {}
 >Element : Symbol(Element, Decl(jsxElementType.tsx, 0, 23))
->T : Symbol(T, Decl(jsxElementType.tsx, 1, 22))
+>P : Symbol(P, Decl(jsxElementType.tsx, 1, 22))
+>T : Symbol(T, Decl(jsxElementType.tsx, 1, 24))
 
     interface ElementClass {}
->ElementClass : Symbol(ElementClass, Decl(jsxElementType.tsx, 1, 27))
+>ElementClass : Symbol(ElementClass, Decl(jsxElementType.tsx, 1, 30))
 
     interface ElementAttributesProperty { props: {} }
 >ElementAttributesProperty : Symbol(ElementAttributesProperty, Decl(jsxElementType.tsx, 2, 29))
@@ -40,4 +41,30 @@ const x = <Component />;
 const y = <span />;
 >y : Symbol(y, Decl(jsxElementType.tsx, 13, 5))
 >span : Symbol(JSX.IntrinsicElements.span, Decl(jsxElementType.tsx, 5, 33))
+
+const z = <Component foo="bar" />;
+>z : Symbol(z, Decl(jsxElementType.tsx, 14, 5))
+>Component : Symbol(Component, Decl(jsxElementType.tsx, 6, 1))
+>foo : Symbol(foo, Decl(jsxElementType.tsx, 14, 20))
+
+interface IProps { foo: string; bar?: number; }
+>IProps : Symbol(IProps, Decl(jsxElementType.tsx, 14, 34))
+>foo : Symbol(IProps.foo, Decl(jsxElementType.tsx, 16, 18))
+>bar : Symbol(IProps.bar, Decl(jsxElementType.tsx, 16, 31))
+
+const props: IProps = { foo: "test" };
+>props : Symbol(props, Decl(jsxElementType.tsx, 17, 5))
+>IProps : Symbol(IProps, Decl(jsxElementType.tsx, 14, 34))
+>foo : Symbol(foo, Decl(jsxElementType.tsx, 17, 23))
+
+const w = <Component {...props} />;
+>w : Symbol(w, Decl(jsxElementType.tsx, 18, 5))
+>Component : Symbol(Component, Decl(jsxElementType.tsx, 6, 1))
+>props : Symbol(props, Decl(jsxElementType.tsx, 17, 5))
+
+const v = <Component {...props} foo="bar" />;
+>v : Symbol(v, Decl(jsxElementType.tsx, 19, 5))
+>Component : Symbol(Component, Decl(jsxElementType.tsx, 6, 1))
+>props : Symbol(props, Decl(jsxElementType.tsx, 17, 5))
+>foo : Symbol(foo, Decl(jsxElementType.tsx, 19, 31))
 

@@ -4,7 +4,7 @@
 // @noEmit: true
 
 declare namespace JSX {
-    interface Element<T> {}
+    interface Element<P, T> {}
     interface ElementClass {}
     interface ElementAttributesProperty { props: {} }
     interface ElementChildrenAttribute { children: {} }
@@ -17,3 +17,9 @@ type X = typeof Component;
 
 const x = <Component />;
 const y = <span />;
+const z = <Component foo="bar" />;
+
+interface IProps { foo: string; bar?: number; }
+const props: IProps = { foo: "test" };
+const w = <Component {...props} />;
+const v = <Component {...props} foo="bar" />;
