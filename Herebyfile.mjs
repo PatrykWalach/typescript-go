@@ -740,7 +740,7 @@ async function runTestTools() {
 }
 
 async function runTestAPI() {
-    await $`npm run -w @typescript/native-preview test:only`;
+    await $`npm run -w @patryk_walach/typescript test:only`;
 }
 
 export const testTools = task({
@@ -751,23 +751,23 @@ export const testTools = task({
 
 export const buildAPI = task({
     name: "build:api",
-    description: "Builds @typescript/native-preview JS API.",
+    description: "Builds @patryk_walach/typescript JS API.",
     run: async () => {
-        await $`npm run -w @typescript/native-preview build`;
+        await $`npm run -w @patryk_walach/typescript build`;
     },
 });
 
 export const buildAPITests = task({
     name: "build:api:test",
-    description: "Builds the @typescript/native-preview JS API tests.",
+    description: "Builds the @patryk_walach/typescript JS API tests.",
     run: async () => {
-        await $`npm run -w @typescript/native-preview build:test`;
+        await $`npm run -w @patryk_walach/typescript build:test`;
     },
 });
 
 export const testAPI = task({
     name: "test:api",
-    description: "Runs the @typescript/native-preview JS API tests.",
+    description: "Runs the @patryk_walach/typescript JS API tests.",
     dependencies: [tsgo, buildAPITests],
     run: runTestAPI,
 });
@@ -1398,7 +1398,7 @@ function cpWithoutNodeModulesOrTsconfig(src, dest) {
 }
 
 const mainNativePreviewPackage = {
-    npmPackageName: "@typescript/native-preview",
+    npmPackageName: "@patryk_walach/typescript",
     npmDir: path.join(builtNpm, "native-preview"),
     npmTarball: path.join(builtNpm, "native-preview.tgz"),
 };
@@ -1579,7 +1579,7 @@ async function runBuildNativePreviewPackages() {
     await fs.promises.copyFile("NOTICE.txt", path.join(mainPackageDir, "NOTICE.txt"));
 
     // Build JS API and copy dist into the package.
-    await $`npm run -w @typescript/native-preview build`;
+    await $`npm run -w @patryk_walach/typescript build`;
     await cpRecursive(path.join(inputDir, "dist"), path.join(mainPackageDir, "dist"));
 
     // Validate that .d.ts files contain no external imports (all imports must start with "." or "#").
